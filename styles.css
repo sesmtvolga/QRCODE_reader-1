@@ -3,15 +3,18 @@ body {
     margin: 20px;
 }
 
-#employee-info {
-    text-align: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-top: 50px;
+.info-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
 }
 
-#employee-name {
-    font-size: 18px;
-    font-weight: bold;
+.info-table th, .info-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.info-table th {
+    background-color: #f2f2f2;
 }

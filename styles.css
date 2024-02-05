@@ -1,0 +1,17 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+#employee-info {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 50px;
+}
+
+#employee-name {
+    font-size: 18px;
+    font-weight: bold;
+}

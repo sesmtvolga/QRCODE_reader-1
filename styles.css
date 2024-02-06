@@ -18,3 +18,16 @@ body {
 .info-table th {
     background-color: #f2f2f2;
 }
+
+.employee-photo {
+    width: 100px; /* Ajuste conforme necessário */
+    height: auto;
+    float: left; /* Coloca a foto no canto superior direito */
+    margin-left: 10px; /* Espaçamento entre a foto e o conteúdo */
+}
+
+.placeholder-image {
+    width: 100px; /* Ajuste conforme necessário */
+    height: 100px; /* Ajuste conforme necessário */
+    background-color: lightgray; /* Cor de fundo para o quadro da foto */
+}

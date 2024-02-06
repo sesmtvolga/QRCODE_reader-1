@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Verifica se o nome do colaborador foi fornecido na URL
     if (employeeName) {
         // Constrói a URL da API com o nome do colaborador
-        const apiUrl = `https://script.google.com/macros/s/AKfycbw_-yrcf1dmQB3RWBleeeq5UcWkzuMYIGg2lKO2bB2pCV4SAfff8Sjioj9uBiYwcja9/exec?nome=${encodeURIComponent(employeeName)}`;
+        const apiUrl = `https://script.google.com/macros/s/AKfycbyQ7FPHM6W5kC-0Q91WQF1Fcw0OiaTSv2OvD1BmwRdbcO-Ta5q7Xb046DvPzkRH1xNC/exec?nome=${encodeURIComponent(employeeName)}`;
 
         // Faz uma requisição à API usando fetch
         fetch(apiUrl)
@@ -36,17 +36,53 @@ function formatarData(data) {
     return data ? new Date(data).toLocaleDateString('pt-BR') : '-';
 }
 
+// Função para substituir valores vazios ou "-" por "Não se aplica"
+function substituirNaoSeAplica(valor) {
+    return valor === '-' ? 'Não se aplica' : valor;
+}
+
+// Função para verificar se pelo menos um valor de uma tabela não é "Não se aplica"
+function algumValorNaoSeAplica(tabela) {
+    const celulas = tabela.querySelectorAll('td');
+    for (const celula of celulas) {
+        const textoCelula = celula.textContent.trim();
+        if (textoCelula !== 'Data: Não se aplica' && 
+            textoCelula !== 'Vencimento: Não se aplica' && 
+            textoCelula !== 'Status: Não se aplica') {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Função para atualizar o conteúdo da página com os dados do colaborador
 function updatePageContent(employeeData) {
     const employeeInfoElement = document.getElementById('employee-info');
-    employeeInfoElement.innerHTML = `<h1>Dados do Funcionário - ${employeeData.NOME}</h1>`;
+    employeeInfoElement.innerHTML = `<h1>Dados do Colaborador - ${employeeData.NOME}</h1>`;
+
+    // Adiciona a foto do colaborador
+    const linkFoto = employeeData.LINK_FOTO;
+    console.log("Link da foto: " + employeeData.LINK_FOTO);
+    if (linkFoto) {
+        const imgElement = document.createElement('img');
+        imgElement.src = linkFoto;
+        imgElement.alt = 'Foto do Colaborador';
+        imgElement.classList.add('employee-photo');
+        employeeInfoElement.appendChild(imgElement);
+    } else {
+        const placeholderImg = document.createElement('div');
+        placeholderImg.classList.add('placeholder-image');
+        employeeInfoElement.appendChild(placeholderImg);
+    }
 
     // Agrupa os campos relacionados em tabelas
     const tabelas = agruparEmTabelas(employeeData);
 
-    // Adiciona as tabelas à página
+    // Adiciona as tabelas à página, verificando se pelo menos um valor não é "Não se aplica"
     tabelas.forEach(tabela => {
-        employeeInfoElement.appendChild(tabela);
+        if (algumValorNaoSeAplica(tabela)) {
+            employeeInfoElement.appendChild(tabela);
+        }
     });
 }
 
@@ -112,10 +148,29 @@ function criarLinhaTabela(campos) {
     // Adiciona as células à linha
     for (const key in campos) {
         const td = document.createElement('td');
-        const value = (key.startsWith('DATA')) ? `Data: ${formatarData(campos[key])}` : 
-                      (key.startsWith('VENCIMENTO')) ? `Vencimento: ${formatarData(campos[key])}` :
-                      (key.startsWith('STATUS')) ? `Status: ${campos[key]}` : campos[key];
-        td.innerHTML = value;
+        let value = campos[key];
+        
+        // Formata as datas para o formato "dd/mm/aaaa" se forem válidas
+        if (key.startsWith('DATA') || key.startsWith('VENCIMENTO')) {
+            const dataFormatada = formatarData(value);
+            if (dataFormatada !== 'Invalid Date') {
+                value = dataFormatada;
+            }
+        }
+
+        // Substitui valores vazios ou "-" por "Não se aplica"
+        value = substituirNaoSeAplica(value);
+
+        // Adiciona o prefixo apropriado para DATA, VENCIMENTO e STATUS
+        if (key.startsWith('DATA')) {
+            value = `Data: ${value}`;
+        } else if (key.startsWith('VENCIMENTO')) {
+            value = `Vencimento: ${value}`;
+        } else if (key.startsWith('STATUS')) {
+            value = `Status: ${value}`;
+        }
+
+        td.textContent = value;
         linha.appendChild(td);
     }
 
@@ -132,7 +187,7 @@ function obterTituloTabela(sufixo) {
         case 'ASO':
             return 'Exame ASO';
         case 'EPI':
-            return 'Ficha EPI';
+            return 'Ficha de EPI';
         case 'NR18':
             return 'Curso NR18';
         case 'NR06':
@@ -146,11 +201,9 @@ function obterTituloTabela(sufixo) {
         case 'NR12':
             return 'Curso NR12';
         case 'QUENTE':
-            return 'Trabalho a Quente';
+            return 'Curso de Trabalho a Quente';
         // Caso não seja nenhum dos sufixos específicos, retorna o próprio sufixo
         default:
             return sufixo;
     }
 }
-
-

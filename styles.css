@@ -22,8 +22,8 @@ body {
 .employee-photo {
     width: 100px; /* Ajuste conforme necessário */
     height: auto;
-    float: left; /* Coloca a foto no canto superior direito */
-    margin-left: 10px; /* Espaçamento entre a foto e o conteúdo */
+    float: left; /* Posição da foto */
+    margin-bottom: 25px; /* Espaçamento entre a foto e o conteúdo */
 }
 
 .placeholder-image {

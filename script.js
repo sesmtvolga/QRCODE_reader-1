@@ -41,19 +41,21 @@ function substituirNaoSeAplica(valor) {
     return valor === '-' ? 'Não se aplica' : valor;
 }
 
-// Função para verificar se pelo menos um valor de uma tabela não é "Não se aplica"
+// Função para verificar se pelo menos um valor de uma tabela não é "Não se aplica" ou contém o link da foto
 function algumValorNaoSeAplica(tabela) {
     const celulas = tabela.querySelectorAll('td');
     for (const celula of celulas) {
         const textoCelula = celula.textContent.trim();
         if (textoCelula !== 'Data: Não se aplica' && 
             textoCelula !== 'Vencimento: Não se aplica' && 
-            textoCelula !== 'Status: Não se aplica') {
+            textoCelula !== 'Status: Não se aplica' &&
+            !textoCelula.includes('https://lh3.googleusercontent.com/d/')) {
             return true;
         }
     }
     return false;
 }
+
 
 // Função para atualizar o conteúdo da página com os dados do colaborador
 function updatePageContent(employeeData) {

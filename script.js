@@ -56,7 +56,6 @@ function algumValorNaoSeAplica(tabela) {
     return false;
 }
 
-
 // Função para atualizar o conteúdo da página com os dados do colaborador
 function updatePageContent(employeeData) {
     const employeeInfoElement = document.getElementById('employee-info');
@@ -77,6 +76,13 @@ function updatePageContent(employeeData) {
         employeeInfoElement.appendChild(placeholderImg);
     }
 
+    // Adiciona a logo da empresa
+    const companyLogo = document.createElement('img');
+    companyLogo.src = 'images/logo.png'; // Caminho da imagem da logo
+    companyLogo.alt = 'Logo da Empresa';
+    companyLogo.classList.add('company-logo');
+    employeeInfoElement.appendChild(companyLogo);
+
     // Agrupa os campos relacionados em tabelas
     const tabelas = agruparEmTabelas(employeeData);
 
@@ -85,6 +91,18 @@ function updatePageContent(employeeData) {
         if (algumValorNaoSeAplica(tabela)) {
             employeeInfoElement.appendChild(tabela);
         }
+    });
+
+    // Adiciona o botão "Exportar para PDF" no final das tabelas
+    const exportPdfButton = document.createElement('button');
+    exportPdfButton.id = 'export-pdf-button';
+    exportPdfButton.classList.add('button');
+    exportPdfButton.textContent = 'Exportar para PDF';
+    employeeInfoElement.appendChild(exportPdfButton);
+
+    // Adiciona a funcionalidade de exportar para PDF ao botão
+    exportPdfButton.addEventListener('click', function() {
+        window.print();
     });
 }
 

@@ -38,7 +38,10 @@ function formatarData(data) {
 
 // Função para substituir valores vazios ou "-" por "Não se aplica"
 function substituirNaoSeAplica(valor) {
-    return valor === '-' ? 'Não se aplica' : valor;
+    if (valor === '' || valor === '-')
+        valor = "Não se aplica";
+
+    return valor;
 }
 
 // Função para verificar se pelo menos um valor de uma tabela não é "Não se aplica" ou contém o link da foto
@@ -49,6 +52,9 @@ function algumValorNaoSeAplica(tabela) {
         if (textoCelula !== 'Data: Não se aplica' && 
             textoCelula !== 'Vencimento: Não se aplica' && 
             textoCelula !== 'Status: Não se aplica' &&
+            textoCelula !== 'Nome: Não se aplica' &&
+            textoCelula !== 'Telefone: Não se aplica' &&
+            textoCelula !== 'Não se aplica' &&
             !textoCelula.includes('https://lh3.googleusercontent.com/d/')) {
             return true;
         }
@@ -59,7 +65,7 @@ function algumValorNaoSeAplica(tabela) {
 // Função para atualizar o conteúdo da página com os dados do colaborador
 function updatePageContent(employeeData) {
     const employeeInfoElement = document.getElementById('employee-info');
-    employeeInfoElement.innerHTML = `<h1>Dados do Colaborador - ${employeeData.NOME}</h1>`;
+    employeeInfoElement.innerHTML = `<h1>Dados do(a) Colaborador(a) ${employeeData.NOME}</h1>`;
 
     // Adiciona a foto do colaborador
     const linkFoto = employeeData.LINK_FOTO;
@@ -188,6 +194,10 @@ function criarLinhaTabela(campos) {
             value = `Vencimento: ${value}`;
         } else if (key.startsWith('STATUS')) {
             value = `Status: ${value}`;
+        } else if (key.startsWith('NOME_CONT_')) {
+            value = `Nome: ${value}`;
+        } else if (key.startsWith('TEL_CONT_')) {
+            value = `Telefone: ${value}`;
         }
 
         td.textContent = value;
@@ -222,6 +232,14 @@ function obterTituloTabela(sufixo) {
             return 'Curso NR12';
         case 'QUENTE':
             return 'Curso de Trabalho a Quente';
+        case 'EMERGENCIA':
+            return 'Contato de Emergência';
+        case 'SANGUINEO':
+            return 'Tipo Sanguíneo';
+        case 'ALERGIAS':
+            return 'Alergias';
+        case 'DOENCAS':
+            return 'Doenças';
         // Caso não seja nenhum dos sufixos específicos, retorna o próprio sufixo
         default:
             return sufixo;

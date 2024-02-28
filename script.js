@@ -198,6 +198,12 @@ function criarLinhaTabela(campos) {
             value = `Nome: ${value}`;
         } else if (key.startsWith('TEL_CONT_')) {
             value = `Telefone: ${value}`;
+        } else if (key.startsWith('TIPO_SANGUINEO_')) {
+            value = `Tipo Sanguíneo: ${value}`;
+        } else if (key.startsWith('ALERGIAS_')) {
+            value = `Alergias: ${value}`;
+        } else if (key.startsWith('DOENCAS_')) {
+            value = `Enfermidades: ${value}`;
         }
 
         td.textContent = value;
@@ -234,12 +240,8 @@ function obterTituloTabela(sufixo) {
             return 'Curso de Trabalho a Quente';
         case 'EMERGENCIA':
             return 'Contato de Emergência';
-        case 'SANGUINEO':
-            return 'Tipo Sanguíneo';
-        case 'ALERGIAS':
-            return 'Alergias';
-        case 'DOENCAS':
-            return 'Doenças';
+        case 'SAUDE':
+            return 'Dados de Saúde';
         // Caso não seja nenhum dos sufixos específicos, retorna o próprio sufixo
         default:
             return sufixo;

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Verifica se o nome do colaborador foi fornecido na URL
     if (employeeName) {
         // Constrói a URL da API com o nome do colaborador
-        const apiUrl = `https://script.google.com/macros/s/AKfycbzyAr7oKakj1CeDrwyBxjFfg-ys089IK5oEphcRH3P76lTQ4FjcQZgJEYhJcvrq8Czjjw/exec?nome=${encodeURIComponent(employeeName)}`;
+        const apiUrl = `https://script.google.com/macros/s/AKfycbyUgfOdR-IMCUI2j0fE8Qm1CScqMpD03hKLU7-JQt4MTdvcD9RJzEpyr9SuqrzlL0w7Aw/exec?nome=${encodeURIComponent(employeeName)}`;
 
         // Faz uma requisição à API usando fetch
         fetch(apiUrl)
